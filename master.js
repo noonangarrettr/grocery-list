@@ -88,7 +88,7 @@ STORES.forEach((store) => {
     await db.collection("commonItems").add({
       name: trimmed,
       store: store,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: firebase.firestore.Timestamp.now()
     });
     input.value = "";
   });
