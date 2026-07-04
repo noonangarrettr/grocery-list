@@ -121,10 +121,10 @@ body[data-store="Other"] { --accent: var(--c-other); }
 /* ---------- Store tabs — hanging aisle signs ---------- */
 .store-tabs {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 16px 16px 12px;
-  scrollbar-width: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 8px;
+  padding: 16px 12px 12px;
   position: relative;
   z-index: 1;
 }

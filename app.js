@@ -59,6 +59,12 @@ function switchStore(store) {
   document.querySelectorAll(".store-tab").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.store === store);
   });
+  // Clear the previous store's list and chips immediately so its contents
+  // never linger on screen while the new store's snapshot is loading. Without
+  // this, the old store's items appear to "carry over" to the new list.
+  itemList.innerHTML = `<div class="empty-state">Loading ${store}…</div>`;
+  itemCount.textContent = "";
+  chipRow.innerHTML = "";
   attachListeners();
 }
 
@@ -105,7 +111,11 @@ function renderItems(snapshot) {
     check.className = "item-check";
     check.innerHTML = '<svg viewBox="0 0 18 18"><path d="M2.5 9.5 L7 14 L15.5 3.5"/></svg>';
     check.addEventListener("click", () => {
-      db.collection("shoppingItems").doc(doc.id).update({ checked: !data.checked });
+      const willCheck = !data.checked;
+      // Reflect the change instantly for tactile feedback; the snapshot
+      // listener will re-render and re-sort a beat later.
+      li.classList.toggle("checked", willCheck);
+      db.collection("shoppingItems").doc(doc.id).update({ checked: willCheck });
     });
 
     const text = document.createElement("div");
@@ -181,7 +191,11 @@ async function addItem(name, notes) {
     notes: notes.trim(),
     store: currentStore,
     checked: false,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    // Client-side timestamp (not serverTimestamp) so the value exists
+    // immediately. A pending serverTimestamp reads back as null locally,
+    // which makes the createdAt ordering unstable and delays the new item
+    // from settling into place until the server round-trip completes.
+    createdAt: firebase.firestore.Timestamp.now()
   });
 }
 
