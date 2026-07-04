@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>The List — Shopping</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="receipt-header">
+  <div class="top-row">
+    <div>
+      <div class="eyebrow">Noonan Household</div>
+      <h1>The List</h1>
+    </div>
+    <a class="nav-link" href="master.html">Regulars</a>
+  </div>
+</header>
+<div class="torn-edge"></div>
+
+<nav class="store-tabs" id="storeTabs"></nav>
+
+<div class="toolbar">
+  <span class="eyebrow" id="itemCount"></span>
+  <button class="void-btn" id="clearBtn">Void Checked</button>
+</div>
+
+<div class="chip-row" id="chipRow"></div>
+
+<ul class="item-list" id="itemList"></ul>
+
+<form class="add-bar" id="addForm">
+  <input class="field-name" id="nameInput" type="text" placeholder="Add item…" autocomplete="off" required>
+  <input class="field-notes" id="notesInput" type="text" placeholder="Notes (qty, etc.)" autocomplete="off">
+  <button class="add-btn" type="submit" aria-label="Add item">+</button>
+</form>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

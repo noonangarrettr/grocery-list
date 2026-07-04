@@ -1,0 +1,439 @@
+/* ============================================
+   The List — "Corner Store Chalkboard"
+   A dark chalkboard canvas, hand-lettered
+   signage, and store-specific paint colors
+   that recolor the whole screen when active.
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Nunito:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --board: #1B2620;
+  --board-2: #202D26;
+  --chalk: #F2EFE4;
+  --chalk-dim: #A9B3AC;
+  --yellow: #E8C547;
+
+  /* store paint colors */
+  --c-vons: #D1483C;
+  --c-smart: #6FA25E;
+  --c-costco: #4C86C4;
+  --c-tj: #DE9B3A;
+  --c-other: #9A76B8;
+
+  --accent: var(--yellow);
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(255,255,255,0.05), transparent 45%),
+    radial-gradient(ellipse at 90% 110%, rgba(255,255,255,0.04), transparent 40%),
+    var(--board);
+  color: var(--chalk);
+  font-family: 'Nunito', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* chalk dust grain, subtle */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 0;
+}
+
+body { padding-bottom: 104px; }
+
+/* store paint recolors the accent app-wide */
+body[data-store="Vons"] { --accent: var(--c-vons); }
+body[data-store="Smart & Final"] { --accent: var(--c-smart); }
+body[data-store="Costco"] { --accent: var(--c-costco); }
+body[data-store="Trader Joe's"] { --accent: var(--c-tj); }
+body[data-store="Other"] { --accent: var(--c-other); }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+}
+
+/* ---------- Header ---------- */
+.receipt-header {
+  position: relative;
+  padding: 24px 20px 20px;
+  z-index: 1;
+}
+
+.receipt-header .top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.receipt-header h1 {
+  font-family: 'Permanent Marker', cursive;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  margin: 6px 0 0;
+  color: var(--chalk);
+  transform: rotate(-1deg);
+  transform-origin: left;
+}
+
+.nav-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--board);
+  text-decoration: none;
+  background: var(--accent);
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.35);
+}
+.nav-link:active { transform: translateY(2px); box-shadow: none; }
+
+/* chalk-drawn wavy divider under header */
+.torn-edge {
+  height: 14px;
+  width: 100%;
+  margin: 6px 0 2px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 7 C 5 2, 10 12, 15 7 S 25 2, 30 7 S 38 12, 40 7' stroke='%23A9B3AC' stroke-width='1.5' fill='none' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 40px 14px;
+  opacity: 0.7;
+}
+
+/* ---------- Store tabs — hanging aisle signs ---------- */
+.store-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 16px 16px 12px;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+}
+.store-tabs::-webkit-scrollbar { display: none; }
+
+.store-tab {
+  position: relative;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 14px;
+  font-weight: 400;
+  background: var(--tab-color, var(--c-other));
+  color: #ffffff;
+  border: none;
+  padding: 10px 14px 8px;
+  border-radius: 3px 3px 8px 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.55;
+  transform: rotate(var(--tilt, 0deg)) scale(0.94);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.tab-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--board);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--board);
+  display: none;
+}
+.store-tab:nth-child(1) { --tilt: -2deg; }
+.store-tab:nth-child(2) { --tilt: 1.5deg; }
+.store-tab:nth-child(3) { --tilt: -1deg; }
+.store-tab:nth-child(4) { --tilt: 2deg; }
+.store-tab:nth-child(5) { --tilt: -1.5deg; }
+
+.store-tab.active {
+  opacity: 1;
+  transform: rotate(0deg) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+/* ---------- Toolbar ---------- */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.void-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--board);
+  background: var(--accent);
+  border: none;
+  padding: 7px 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.35);
+}
+.void-btn:active { transform: translateY(2px); box-shadow: none; }
+
+/* ---------- Quick-add chips (price-tag style) ---------- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 16px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.chip {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--board-2);
+  border: 1.5px dashed var(--accent);
+  color: var(--chalk);
+  padding: 8px 13px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.chip:active { background: var(--accent); color: var(--board); }
+.chip-empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--chalk-dim);
+  padding: 8px 0;
+}
+
+/* ---------- Item list ---------- */
+.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 4px;
+  border-bottom: 1.5px dashed rgba(169,179,172,0.28);
+}
+
+.item-check {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 2px solid var(--chalk-dim);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+}
+.item-row.checked .item-check {
+  border-color: var(--accent);
+  background: rgba(232,197,71,0.12);
+}
+.item-check svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+.item-row.checked .item-check svg { opacity: 1; }
+
+.item-text { flex: 1; min-width: 0; }
+.item-name {
+  font-size: 16px;
+  font-weight: 700;
+  word-break: break-word;
+}
+.item-notes {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--yellow);
+  margin-top: 3px;
+  opacity: 0.85;
+}
+
+.item-row.checked .item-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  color: var(--chalk-dim);
+}
+.item-row.checked .item-notes { opacity: 0.35; }
+
+.item-delete {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: rgba(169,179,172,0.4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  flex-shrink: 0;
+}
+.item-delete:active { color: var(--c-vons); }
+
+.empty-state {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 18px;
+  color: var(--chalk-dim);
+  text-align: center;
+  padding: 48px 24px;
+  transform: rotate(-1deg);
+}
+
+/* ---------- Add bar — a notepad stuck to the board ---------- */
+.add-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #EFE8D5;
+  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+  box-shadow: 0 -6px 16px rgba(0,0,0,0.35);
+  border-top: 3px solid var(--accent);
+}
+
+.add-bar input {
+  border: none;
+  border-radius: 4px;
+  padding: 11px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  background: #ffffff;
+  color: #2A2A2A;
+}
+.add-bar input:focus {
+  outline: 2px solid var(--accent);
+}
+.add-bar input::placeholder { color: #9a9488; }
+
+.add-bar .field-name { flex: 1.4; min-width: 0; }
+.add-bar .field-notes { flex: 1; min-width: 0; }
+
+.add-btn {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 22px;
+  background: var(--board);
+  color: var(--accent);
+  border: none;
+  border-radius: 4px;
+  width: 46px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.add-btn:active { transform: scale(0.94); }
+
+/* ---------- Master list page — index cards ---------- */
+.store-section {
+  margin: 20px 16px 0;
+  background: var(--board-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border-top: 4px solid var(--tab-color, var(--c-other));
+  position: relative;
+  z-index: 1;
+}
+
+.store-section h2 {
+  font-family: 'Permanent Marker', cursive;
+  font-weight: 400;
+  font-size: 18px;
+  margin: 0;
+  padding: 12px 16px 8px;
+  color: var(--chalk);
+}
+
+.common-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-top: 1.5px dashed rgba(169,179,172,0.22);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.master-add-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px;
+}
+.master-add-row input {
+  flex: 1;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 11px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  background: #ffffff;
+  color: #2A2A2A;
+  min-width: 0;
+}
+.master-add-row button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  background: var(--tab-color, var(--yellow));
+  color: var(--board);
+  border: none;
+  border-radius: 4px;
+  padding: 0 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+@media (min-width: 640px) {
+  .receipt-header, .store-tabs, .toolbar, .chip-row, .item-list, .add-bar {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .add-bar { left: 0; right: 0; }
+  .store-section { max-width: 528px; margin-left: auto; margin-right: auto; }
+}

@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "shoppingItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "store", "order": "ASCENDING" },
+        { "fieldPath": "checked", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "shoppingItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "store", "order": "ASCENDING" },
+        { "fieldPath": "checked", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "commonItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "store", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" }
+      ]
+    }
+  ]
+}

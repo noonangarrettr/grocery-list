@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /shoppingItems/{itemId} {
+      allow read, write: if true;
+    }
+
+    match /commonItems/{itemId} {
+      allow read, write: if true;
+    }
+
+    // Everything else stays locked down
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
