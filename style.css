@@ -328,7 +328,7 @@ body[data-store="Other"] { --accent: var(--c-other); }
   left: 0;
   right: 0;
   background: #EFE8D5;
-  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  padding: 12px 12px calc(24px + env(safe-area-inset-bottom));
   display: flex;
   gap: 8px;
   z-index: 2;
