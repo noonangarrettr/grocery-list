@@ -15,11 +15,12 @@
   --yellow: #E8C547;
 
   /* store paint colors */
-  --c-vons: #D1483C;
   --c-smart: #6FA25E;
   --c-costco: #4C86C4;
   --c-tj: #DE9B3A;
   --c-other: #9A76B8;
+
+  --red: #D1483C;
 
   --accent: var(--yellow);
   --radius: 6px;
@@ -54,7 +55,6 @@ body::before {
 body { padding-bottom: 104px; }
 
 /* store paint recolors the accent app-wide */
-body[data-store="Vons"] { --accent: var(--c-vons); }
 body[data-store="Smart & Final"] { --accent: var(--c-smart); }
 body[data-store="Costco"] { --accent: var(--c-costco); }
 body[data-store="Trader Joe's"] { --accent: var(--c-tj); }
@@ -310,7 +310,7 @@ body[data-store="Other"] { --accent: var(--c-other); }
   padding: 4px 6px;
   flex-shrink: 0;
 }
-.item-delete:active { color: var(--c-vons); }
+.item-delete:active { color: var(--red); }
 
 .empty-state {
   font-family: 'Permanent Marker', cursive;

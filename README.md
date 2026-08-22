@@ -38,7 +38,7 @@ Open the site, go to **Regulars**, and seed each store with the items you buy of
 
 **`commonItems`** (the Regulars / quick-add library)
 - `name` (string)
-- `store` (string — one of Vons, Smart & Final, Costco, Trader Joe's, Other)
+- `store` (string — one of Smart & Final, Costco, Trader Joe's, Other)
 - `createdAt` (timestamp)
 
 **`shoppingItems`** (the live list)

@@ -1,5 +1,9 @@
 // ---------- State ----------
-let currentStore = localStorage.getItem("lastStore") || STORES[0];
+// Fall back to the first store if the remembered one is no longer offered —
+// otherwise a device that last shopped at a since-removed store opens to an
+// empty list with no tab selected.
+const lastStore = localStorage.getItem("lastStore");
+let currentStore = STORES.includes(lastStore) ? lastStore : STORES[0];
 let unsubItems = null;
 let unsubCommon = null;
 let unsubBadges = null;
@@ -15,7 +19,6 @@ let chipsLoaded = false;
 
 // ---------- Store tabs ----------
 const STORE_COLORS = {
-  "Vons": "var(--c-vons)",
   "Smart & Final": "var(--c-smart)",
   "Costco": "var(--c-costco)",
   "Trader Joe's": "var(--c-tj)",

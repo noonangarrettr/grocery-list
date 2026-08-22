@@ -23,4 +23,4 @@ db.settings({ experimentalForceLongPolling: true });
 // a full page reload. Writes made with bad signal still queue in memory
 // and commit when the connection recovers.
 
-const STORES = ["Vons", "Smart & Final", "Costco", "Trader Joe's", "Other"];
+const STORES = ["Smart & Final", "Costco", "Trader Joe's", "Other"];

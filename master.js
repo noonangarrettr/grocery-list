@@ -1,7 +1,6 @@
 const sectionsEl = document.getElementById("sections");
 
 const STORE_COLORS = {
-  "Vons": "var(--c-vons)",
   "Smart & Final": "var(--c-smart)",
   "Costco": "var(--c-costco)",
   "Trader Joe's": "var(--c-tj)",
