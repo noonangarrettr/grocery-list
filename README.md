@@ -2,6 +2,7 @@
 
 Two pages:
 - **index.html** — the shopping list, used in-store. Switch stores with the tabs, tap chips to quick-add regulars, check items off as you shop.
+  - **Full List** (button under Regulars) — every store's items on one screen, grouped by store, so you can spot anything you could grab where you are. Works like a store list (check, delete, Delete Items, add with a store picker) but has no quick-add regulars. Tap any store tab to go back.
 - **master.html** — "Regulars," where you manage the common items per store.
 
 ## 1. Create the Firebase project

@@ -437,3 +437,55 @@ body[data-store="Other"] { --accent: var(--c-other); }
   .add-bar { left: 0; right: 0; }
   .store-section { max-width: 528px; margin-left: auto; margin-right: auto; }
 }
+
+/* ---------- Full List ---------- */
+.nav-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.nav-stack .nav-link { text-align: center; }
+
+.full-btn {
+  border: 1.5px dashed var(--chalk-dim);
+  background: transparent;
+  color: var(--chalk);
+  cursor: pointer;
+  box-shadow: none;
+}
+.full-btn.active {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: var(--board);
+}
+
+.store-group-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 18px;
+  padding: 0 4px 6px;
+  border-bottom: 3px solid var(--accent);
+  font-family: 'Permanent Marker', cursive;
+  font-size: 18px;
+  color: var(--accent);
+}
+.store-group-heading:first-child { margin-top: 4px; }
+
+/* the store picker only appears on the Full List, where new items need a home */
+.add-bar .field-store {
+  display: none;
+  flex-shrink: 0;
+  width: 76px;
+  border: none;
+  border-radius: 4px;
+  padding: 0 6px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  background: #ffffff;
+  color: #2A2A2A;
+}
+body[data-store="Full List"] .add-bar .field-store { display: block; }
+body[data-store="Full List"] .chip-row { display: none; }
